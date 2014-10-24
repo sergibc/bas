@@ -1,11 +1,11 @@
 package com.tempos21.cieguitos.ui.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.estimote.sdk.Region;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -16,9 +16,13 @@ import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.tempos21.cieguitos.R;
+import com.tempos21.cieguitos.bean.PlaceInfo;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class PhoneMainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, ResultCallback<DataApi.DataItemResult>, View.OnClickListener, DataApi.DataListener {
+public class PhoneMainActivity extends LocationBeaconsActivity implements GoogleApiClient.ConnectionCallbacks, ResultCallback<DataApi.DataItemResult>, View.OnClickListener, DataApi.DataListener {
 
 	private static final String COUNT_KEY = "COUNT_KEY";
 	private GoogleApiClient mGoogleApiClient;
@@ -33,6 +37,20 @@ public class PhoneMainActivity extends Activity implements GoogleApiClient.Conne
 		findViews();
 
 		configPlayServices();
+	}
+
+	@Override
+	protected Map<Region, PlaceInfo> createRegions() {
+		Map<Region, PlaceInfo> map = new HashMap<Region, PlaceInfo>();
+		map.put(new Region("BLUE", "B9407F30-F5F8-466E-AFF9-25556B57FE6D", 1000, 1), new PlaceInfo("BLUE"));
+		map.put(new Region("PINK", "B9407F30-F5F8-466E-AFF9-25556B57FE6D", 1000, 2), new PlaceInfo("PINK"));
+		map.put(new Region("GREEN", "B9407F30-F5F8-466E-AFF9-25556B57FE6D", 1000, 3), new PlaceInfo("GREEN"));
+		return map;
+	}
+
+	@Override
+	protected void onRegionEntered(PlaceInfo placeInfo) {
+		Toast.makeText(this, placeInfo.getText(), Toast.LENGTH_SHORT).show();
 	}
 
 	private void findViews() {

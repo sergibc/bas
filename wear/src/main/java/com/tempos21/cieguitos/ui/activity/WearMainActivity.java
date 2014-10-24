@@ -28,6 +28,7 @@ public class WearMainActivity extends Activity implements GoogleApiClient.Connec
 	private GoogleApiClient mGoogleApiClient;
 	private boolean mResolvingError;
 	private View wearButton;
+	private WatchViewStub watchViewStub;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class WearMainActivity extends Activity implements GoogleApiClient.Connec
 
 	@Override
 	public void onLayoutInflated(WatchViewStub watchViewStub) {
+		this.watchViewStub = watchViewStub;
 		findViewsFromStub(watchViewStub);
 	}
 
