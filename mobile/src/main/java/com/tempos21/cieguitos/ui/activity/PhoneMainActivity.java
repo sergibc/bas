@@ -1,6 +1,7 @@
 package com.tempos21.cieguitos.ui.activity;
 
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,18 +18,21 @@ import com.tempos21.cieguitos.R;
 import com.tempos21.cieguitos.bean.PlaceInfo;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class PhoneMainActivity extends LocationBeaconsActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener,
-        MessageApi.MessageListener {
+        MessageApi.MessageListener,
+        TextToSpeech.OnInitListener {
 
-    private static final String COUNT_KEY = "COUNT_KEY";
     private GoogleApiClient mGoogleApiClient;
     private TextView statusWear;
     private View button;
+
+    private TextToSpeech textToSpeech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,17 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
         findViews();
 
         configPlayServices();
+
+        textToSpeech = new TextToSpeech(getApplicationContext(), this);
+    }
+
+    @Override
+    public void onPause() {
+        if (null != textToSpeech) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onPause();
     }
 
     @Override
@@ -90,6 +105,7 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
         switch (v.getId()) {
             case R.id.sendButton:
                 sendMessage();
+                speak();
                 break;
         }
     }
@@ -114,5 +130,21 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
 //        new SendMessageTask().execute();
         SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_PHONE_PATH, "fromPhone");
         thread.start();
+    }
+
+    @Override
+    public void onInit(int status) {
+        // TODO get user language
+        if (status != TextToSpeech.ERROR) {
+            Locale spanish = new Locale("es", "ES");
+            textToSpeech.setLanguage(spanish);
+        }
+    }
+
+    private void speak() {
+        if (null != textToSpeech) {
+            String text = "¿Dónde está el sushi?";
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 }
