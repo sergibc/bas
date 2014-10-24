@@ -50,7 +50,7 @@ public abstract class LocationBeaconsActivity extends ActionBarActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		startService(new Intent(this, LocationBeaconsService.class));
+		//startService(new Intent(this, LocationBeaconsService.class));
 	}
 
 	protected abstract Map<Region,PlaceInfo> createRegions();
@@ -59,7 +59,7 @@ public abstract class LocationBeaconsActivity extends ActionBarActivity {
 
 	@Override
 	protected void onStop() {
-		stopService(new Intent(this, LocationBeaconsService.class));
+		//stopService(new Intent(this, LocationBeaconsService.class));
 		super.onStop();
 	}
 }
