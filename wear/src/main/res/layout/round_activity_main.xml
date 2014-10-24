@@ -6,19 +6,10 @@
                 tools:context=".MainActivity"
                 tools:deviceIds="wear_round">
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_round"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/wearButton"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+    <android.support.wearable.view.GridViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/grid"
+        android:layout_centerInParent="true"
+        android:keepScreenOn="true" />
 </RelativeLayout>

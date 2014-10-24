@@ -2,6 +2,8 @@ package com.tempos21.cieguitos.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.wearable.view.GridPagerAdapter;
+import android.support.wearable.view.GridViewPager;
 import android.support.wearable.view.WatchViewStub;
 import android.view.View;
 import android.widget.TextView;
@@ -21,14 +23,13 @@ import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.tempos21.cieguitos.R;
 
-public class WearMainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, WatchViewStub.OnLayoutInflatedListener, GoogleApiClient.OnConnectionFailedListener, DataApi.DataListener, View.OnClickListener, ResultCallback<DataApi.DataItemResult>, MessageApi.MessageListener {
+public class WearMainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, WatchViewStub.OnLayoutInflatedListener, GoogleApiClient.OnConnectionFailedListener, DataApi.DataListener, View.OnClickListener, ResultCallback<DataApi.DataItemResult>, MessageApi.MessageListener, GridViewPager.OnPageChangeListener {
 
 	private static final String COUNT_KEY = "COUNT_KEY";
-	private TextView mTextView;
 	private GoogleApiClient mGoogleApiClient;
 	private boolean mResolvingError;
-	private View wearButton;
 	private WatchViewStub watchViewStub;
+	private GridViewPager grid;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,19 @@ public class WearMainActivity extends Activity implements GoogleApiClient.Connec
 	public void onLayoutInflated(WatchViewStub watchViewStub) {
 		this.watchViewStub = watchViewStub;
 		findViewsFromStub(watchViewStub);
+		setData();
+	}
+
+	private void findViewsFromStub(WatchViewStub stub) {
+		grid = (GridViewPager) stub.findViewById(R.id.grid);
+		grid.setOnPageChangeListener(this);
+	}
+
+	private void setData() {
+		if (grid != null) {
+			GridPagerAdapter adapter = new MuseumGridPagerAdapter(getFragmentManager());
+			grid.setAdapter(adapter);
+		}
 	}
 
 	@Override
@@ -55,12 +69,6 @@ public class WearMainActivity extends Activity implements GoogleApiClient.Connec
 		if (!mResolvingError) {
 			mGoogleApiClient.connect();
 		}
-	}
-
-	private void findViewsFromStub(WatchViewStub stub) {
-		mTextView = (TextView) stub.findViewById(R.id.text);
-		wearButton = findViewById(R.id.wearButton);
-		wearButton.setOnClickListener(this);
 	}
 
 	@Override
@@ -95,22 +103,17 @@ public class WearMainActivity extends Activity implements GoogleApiClient.Connec
 			if (event.getType() == DataEvent.TYPE_DELETED) {
 
 			} else if (event.getType() == DataEvent.TYPE_CHANGED) {
-				mTextView.setText(event.getDataItem().getUri().toString());
+
 			}
 		}
 	}
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-			case R.id.wearButton:
-				sendData();
-				break;
-		}
+
 	}
 
 	private void sendData() {
-		wearButton.setEnabled(false);
 		PutDataMapRequest dataMap = PutDataMapRequest.create("/patata");
 		dataMap.getDataMap().putInt(COUNT_KEY, 100);
 		PutDataRequest request = dataMap.asPutDataRequest();
@@ -121,7 +124,6 @@ public class WearMainActivity extends Activity implements GoogleApiClient.Connec
 
 	@Override
 	public void onResult(DataApi.DataItemResult dataItemResult) {
-		wearButton.setEnabled(true);
 		if (dataItemResult.getStatus().isSuccess()) {
 			Toast.makeText(WearMainActivity.this, "Data item set: " + dataItemResult.getDataItem().getUri(), Toast.LENGTH_SHORT).show();
 		}
@@ -129,6 +131,21 @@ public class WearMainActivity extends Activity implements GoogleApiClient.Connec
 
 	@Override
 	public void onMessageReceived(MessageEvent messageEvent) {
+
+	}
+
+	@Override
+	public void onPageScrolled(int i, int i2, float v, float v2, int i3, int i4) {
+
+	}
+
+	@Override
+	public void onPageSelected(int i, int i2) {
+
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int i) {
 
 	}
 }
