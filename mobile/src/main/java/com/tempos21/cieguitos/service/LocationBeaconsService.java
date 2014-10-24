@@ -1,18 +1,18 @@
-package com.tempos21.cieguitos;
+package com.tempos21.cieguitos.service;
 
-import android.app.IntentService;
-import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
+import android.widget.Toast;
 
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 import com.estimote.sdk.Utils;
+import com.tempos21.cieguitos.BuildConfig;
 
 import java.util.List;
 
@@ -46,6 +46,7 @@ public class LocationBeaconsService extends Service implements BeaconManager.Ran
 	private void start() {
 		beaconManager = new BeaconManager(this);
 		if (beaconManager.checkPermissionsAndService()) {
+			beaconManager.setBackgroundScanPeriod(10, 10);
 			beaconManager.setRangingListener(LocationBeaconsService.this);
 			beaconManager.connect(LocationBeaconsService.this);
 		}
@@ -78,19 +79,14 @@ public class LocationBeaconsService extends Service implements BeaconManager.Ran
 			Beacon beacon = getNearestBeacon(beacons);
 			if (beacon != null) {
 				Intent intent = new Intent(BuildConfig.APPLICATION_ID + ".BEACON_DISCOVERED");
-				if (checkBeacon(beacon)) {
-					lastUUID = beacon.getProximityUUID();
-					lastMajor = beacon.getMajor();
-					lastMinor = beacon.getMinor();
-					intent.putExtra(REGION_FOUND, new Region("", beacon.getProximityUUID(), beacon.getMajor(), beacon.getMinor()));
-					LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-				}
+				lastUUID = beacon.getProximityUUID();
+				lastMajor = beacon.getMajor();
+				lastMinor = beacon.getMinor();
+				Toast.makeText(this, lastUUID + "\n" + lastMajor + "\n" + lastMinor + "\n" + Utils.computeProximity(beacon), Toast.LENGTH_SHORT).show();
+				intent.putExtra(REGION_FOUND, new Region("", beacon.getProximityUUID(), beacon.getMajor(), beacon.getMinor()));
+				LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 			}
 		}
-	}
-
-	private boolean checkBeacon(Beacon beacon) {
-		return (!beacon.getProximityUUID().equals(lastUUID) && (beacon.getMajor() != lastMajor) && (beacon.getMinor() != lastMinor));
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 import com.tempos21.cieguitos.BuildConfig;
-import com.tempos21.cieguitos.LocationBeaconsService;
+import com.tempos21.cieguitos.service.LocationBeaconsService;
 import com.tempos21.cieguitos.bean.PlaceInfo;
 
 import java.util.Map;

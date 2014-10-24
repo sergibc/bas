@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".LocationBeaconsService"/>
+        <service android:name=".service.LocationBeaconsService"/>
 
         <meta-data
             android:name="com.google.android.gms.version"
