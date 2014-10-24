@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.tempos21.cieguitos.R;
 import com.tempos21.cieguitos.data.MuseumData;
+import com.tempos21.cieguitos.ui.fragment.PlantaFragment;
 
 /**
  * Created by Bernat on 24/10/2014.
@@ -23,9 +24,9 @@ public class MuseumGridPagerAdapter extends FragmentGridPagerAdapter {
 
 	@Override
 	public Fragment getFragment(int row, int column) {
-		CardFragment fragment = null;
+		Fragment fragment = null;
 		if (column == 0) {
-			fragment = CardFragment.create("Planta: " + row, "Bla bla bl nskfwe wefmwpfmwpe noefmpowemfwe wejfpwemfwrfo`wa BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackgroundBackgroundController.getBackgroundBackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground BackgroundController.getBackground");
+			fragment = PlantaFragment.newInstance(row);
 		} else {
 			fragment = CardFragment.create("Expo: " + column, "AAh aah ahh");
 		}
