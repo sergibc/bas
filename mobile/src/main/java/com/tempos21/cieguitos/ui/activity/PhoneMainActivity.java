@@ -6,14 +6,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.estimote.sdk.Region;
+import com.example.sergibc.sdk.constants.Constants;
+import com.example.sergibc.sdk.task.SendMessageThread;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.DataEvent;
-import com.google.android.gms.wearable.DataEventBuffer;
-import com.google.android.gms.wearable.PutDataMapRequest;
-import com.google.android.gms.wearable.PutDataRequest;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 import com.tempos21.cieguitos.R;
 import com.tempos21.cieguitos.bean.PlaceInfo;
@@ -21,98 +19,100 @@ import com.tempos21.cieguitos.bean.PlaceInfo;
 import java.util.HashMap;
 import java.util.Map;
 
+public class PhoneMainActivity extends LocationBeaconsActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        View.OnClickListener,
+        MessageApi.MessageListener {
 
-public class PhoneMainActivity extends LocationBeaconsActivity implements GoogleApiClient.ConnectionCallbacks, ResultCallback<DataApi.DataItemResult>, View.OnClickListener, DataApi.DataListener {
+    private static final String COUNT_KEY = "COUNT_KEY";
+    private GoogleApiClient mGoogleApiClient;
+    private TextView statusWear;
+    private View button;
 
-	private static final String COUNT_KEY = "COUNT_KEY";
-	private GoogleApiClient mGoogleApiClient;
-	private TextView statusWear;
-	private View button;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+        findViews();
 
-		findViews();
+        configPlayServices();
+    }
 
-		configPlayServices();
-	}
+    @Override
+    protected Map<Region, PlaceInfo> createRegions() {
+        Map<Region, PlaceInfo> map = new HashMap<Region, PlaceInfo>();
+        map.put(new Region("BLUE", "B9407F30-F5F8-466E-AFF9-25556B57FE6D", 1000, 1), new PlaceInfo("BLUE"));
+        map.put(new Region("PINK", "B9407F30-F5F8-466E-AFF9-25556B57FE6D", 1000, 2), new PlaceInfo("PINK"));
+        map.put(new Region("GREEN", "B9407F30-F5F8-466E-AFF9-25556B57FE6D", 1000, 3), new PlaceInfo("GREEN"));
+        return map;
+    }
 
-	@Override
-	protected Map<Region, PlaceInfo> createRegions() {
-		Map<Region, PlaceInfo> map = new HashMap<Region, PlaceInfo>();
-		map.put(new Region("BLUE", "B9407F30-F5F8-466E-AFF9-25556B57FE6D", 1000, 1), new PlaceInfo("BLUE"));
-		map.put(new Region("PINK", "B9407F30-F5F8-466E-AFF9-25556B57FE6D", 1000, 2), new PlaceInfo("PINK"));
-		map.put(new Region("GREEN", "B9407F30-F5F8-466E-AFF9-25556B57FE6D", 1000, 3), new PlaceInfo("GREEN"));
-		return map;
-	}
+    @Override
+    protected void onRegionEntered(PlaceInfo placeInfo) {
+        Toast.makeText(this, placeInfo.getText(), Toast.LENGTH_SHORT).show();
+    }
 
-	@Override
-	protected void onRegionEntered(PlaceInfo placeInfo) {
-		Toast.makeText(this, placeInfo.getText(), Toast.LENGTH_SHORT).show();
-	}
+    private void findViews() {
+        statusWear = (TextView) findViewById(R.id.statusWear);
+        button = findViewById(R.id.sendButton);
+        button.setOnClickListener(this);
+    }
 
-	private void findViews() {
-		statusWear = (TextView) findViewById(R.id.statusWear);
-		button = findViewById(R.id.sendButton);
-		button.setOnClickListener(this);
-	}
+    private void configPlayServices() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Wearable.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        mGoogleApiClient.connect();
+    }
 
-	private void sendData() {
-		button.setEnabled(false);
-		PutDataMapRequest dataMap = PutDataMapRequest.create("/count");
-		dataMap.getDataMap().putInt(COUNT_KEY, 300);
-		PutDataRequest request = dataMap.asPutDataRequest();
-		PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi
-				.putDataItem(mGoogleApiClient, request);
-		pendingResult.setResultCallback(this);
-	}
+    @Override
+    public void onConnected(Bundle bundle) {
+        Wearable.MessageApi.addListener(mGoogleApiClient, this);
+        Toast.makeText(this, "Connected!", Toast.LENGTH_SHORT).show();
+    }
 
-	private void configPlayServices() {
-		mGoogleApiClient = new GoogleApiClient.Builder(this)
-				.addConnectionCallbacks(this)
-				.addApi(Wearable.API)
-				.build();
-		mGoogleApiClient.connect();
-	}
+    @Override
+    public void onConnectionSuspended(int i) {
+        Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
+    }
 
-	@Override
-	public void onConnected(Bundle bundle) {
-		Wearable.DataApi.addListener(mGoogleApiClient, this);
-		sendData();
-	}
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
+    }
 
-	@Override
-	public void onConnectionSuspended(int i) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.sendButton:
+                sendMessage();
+                break;
+        }
+    }
 
-	}
+    @Override
+    public void onMessageReceived(MessageEvent messageEvent) {
 
-	@Override
-	public void onResult(DataApi.DataItemResult dataItemResult) {
-		if (dataItemResult.getStatus().isSuccess()) {
-			Toast.makeText(PhoneMainActivity.this, "Data item set: " + dataItemResult.getDataItem().getUri(), Toast.LENGTH_SHORT).show();
-		}
-		button.setEnabled(true);
-	}
+        if (Constants.BAS_WEAR_PATH.equals(messageEvent.getPath())) {
+            final String message = new String(messageEvent.getData());
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+//                Toast.makeText(getApplicationContext(), "onMessageReceived", Toast.LENGTH_SHORT).show();
+                    statusWear.setText(message);
+                }
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-			case R.id.sendButton:
-				sendData();
-				break;
-		}
-	}
+            });
+        }
+    }
 
-	@Override
-	public void onDataChanged(DataEventBuffer dataEvents) {
-		for (DataEvent event : dataEvents) {
-			if (event.getType() == DataEvent.TYPE_DELETED) {
-
-			} else if (event.getType() == DataEvent.TYPE_CHANGED) {
-				statusWear.setText(event.getDataItem().getUri().toString());
-			}
-		}
-	}
+    private void sendMessage() {
+//        new SendMessageTask().execute();
+        SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_PHONE_PATH, "fromPhone");
+        thread.start();
+    }
 }

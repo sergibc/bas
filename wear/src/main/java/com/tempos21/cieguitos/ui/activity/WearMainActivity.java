@@ -9,40 +9,42 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sergibc.sdk.constants.Constants;
+import com.example.sergibc.sdk.data.MuseumDataTransfer;
+import com.example.sergibc.sdk.task.SendMessageThread;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
-import com.google.android.gms.wearable.PutDataMapRequest;
-import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
+import com.google.gson.Gson;
 import com.tempos21.cieguitos.R;
 
-public class WearMainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, WatchViewStub.OnLayoutInflatedListener, GoogleApiClient.OnConnectionFailedListener, DataApi.DataListener, View.OnClickListener, ResultCallback<DataApi.DataItemResult>, MessageApi.MessageListener, GridViewPager.OnPageChangeListener {
+public class WearMainActivity extends Activity implements
+        GoogleApiClient.ConnectionCallbacks,
+        WatchViewStub.OnLayoutInflatedListener,
+        GoogleApiClient.OnConnectionFailedListener,
+        MessageApi.MessageListener, DataApi.DataListener, GridViewPager.OnPageChangeListener {
 
-	private static final String COUNT_KEY = "COUNT_KEY";
 	private GoogleApiClient mGoogleApiClient;
 	private boolean mResolvingError;
 	private WatchViewStub watchViewStub;
 	private GridViewPager grid;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		mGoogleApiClient = new GoogleApiClient.Builder(this)
-				.addApi(Wearable.API)
-				.addConnectionCallbacks(this)
-				.addOnConnectionFailedListener(this)
-				.build();
-		final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
-		stub.setOnLayoutInflatedListener(this);
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Wearable.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
+        stub.setOnLayoutInflatedListener(this);
+    }
 
 	@Override
 	public void onLayoutInflated(WatchViewStub watchViewStub) {
@@ -72,16 +74,14 @@ public class WearMainActivity extends Activity implements GoogleApiClient.Connec
 	}
 
 	@Override
-	public void onConnectionSuspended(int i) {
-
+	public void onConnected(Bundle bundle) {
+		Wearable.MessageApi.addListener(mGoogleApiClient, this);
 	}
 
 	@Override
-	public void onConnected(Bundle connectionHint) {
-		Wearable.DataApi.addListener(mGoogleApiClient, this);
-		Wearable.MessageApi.addListener(mGoogleApiClient, this);
-		Toast.makeText(this, "Hello!", Toast.LENGTH_SHORT).show();
-	}
+    public void onConnectionSuspended(int i) {
+        Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
+    }
 
 	@Override
 	protected void onStop() {
@@ -92,51 +92,43 @@ public class WearMainActivity extends Activity implements GoogleApiClient.Connec
 		super.onStop();
 	}
 
-	@Override
-	public void onConnectionFailed(ConnectionResult connectionResult) {
 
-	}
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onMessageReceived(MessageEvent messageEvent) {
+
+        if (Constants.BAS_PHONE_PATH.equals(messageEvent.getPath())) {
+            final String message = new String(messageEvent.getData());
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+					Toast.makeText(WearMainActivity.this, message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void sendMessage(String message) {
+        SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_WEAR_PATH, message);
+        thread.start();
+    }
 
 	@Override
 	public void onDataChanged(DataEventBuffer dataEvents) {
-		for (final DataEvent event : dataEvents) {
-			if (event.getType() == DataEvent.TYPE_DELETED) {
-
-			} else if (event.getType() == DataEvent.TYPE_CHANGED) {
-
-			}
-		}
-	}
-
-	@Override
-	public void onClick(View v) {
-
-	}
-
-	private void sendData() {
-		PutDataMapRequest dataMap = PutDataMapRequest.create("/patata");
-		dataMap.getDataMap().putInt(COUNT_KEY, 100);
-		PutDataRequest request = dataMap.asPutDataRequest();
-		PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi
-				.putDataItem(mGoogleApiClient, request);
-		pendingResult.setResultCallback(this);
-	}
-
-	@Override
-	public void onResult(DataApi.DataItemResult dataItemResult) {
-		if (dataItemResult.getStatus().isSuccess()) {
-			Toast.makeText(WearMainActivity.this, "Data item set: " + dataItemResult.getDataItem().getUri(), Toast.LENGTH_SHORT).show();
-		}
-	}
-
-	@Override
-	public void onMessageReceived(MessageEvent messageEvent) {
 
 	}
 
 	@Override
 	public void onPageScrolled(int i, int i2, float v, float v2, int i3, int i4) {
-
+		Gson gson = new Gson();
+		MuseumDataTransfer dataTransfer = new MuseumDataTransfer();
+		dataTransfer.setPlanta(i);
+		dataTransfer.setExpo(i);
+		sendMessage(gson.toJson(dataTransfer));
 	}
 
 	@Override

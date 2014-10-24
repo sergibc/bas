@@ -4,13 +4,10 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.wearable.view.CardFragment;
 import android.support.wearable.view.FragmentGridPagerAdapter;
-import android.support.wearable.view.GridPagerAdapter;
 import android.support.wearable.view.ImageReference;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.tempos21.cieguitos.R;
-import com.tempos21.cieguitos.data.MuseumData;
+import com.example.sergibc.sdk.data.MuseumData;
 import com.tempos21.cieguitos.ui.fragment.PlantaFragment;
 
 /**
@@ -41,11 +38,6 @@ public class MuseumGridPagerAdapter extends FragmentGridPagerAdapter {
 	@Override
 	public int getColumnCount(int i) {
 		return MuseumData.getInstance().getPlantas().get(i).getExpos().size();
-	}
-
-	@Override
-	public int getCurrentColumnForRow(int row, int currentColumn) {
-		return 0;
 	}
 
 	@Override
