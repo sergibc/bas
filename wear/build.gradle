@@ -6,7 +6,7 @@ android {
     buildToolsVersion "21.0.1"
 
     defaultConfig {
-        applicationId "com.tempos21.cieguitos"
+        applicationId "com.tempos21.bas"
         minSdkVersion 20
         targetSdkVersion 21
         versionCode 1

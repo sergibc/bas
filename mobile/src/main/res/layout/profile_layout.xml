@@ -23,7 +23,7 @@
             android:layout_height="150dp"
             android:src="#88FFFFFF"/>
 
-        <com.tempos21.cieguitos.ui.view.CircularImageView
+        <com.tempos21.bas.ui.view.CircularImageView
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_margin="24dp"

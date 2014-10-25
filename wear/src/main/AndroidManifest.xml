@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.tempos21.cieguitos" >
+    package="com.tempos21.bas" >
 
     <uses-feature android:name="android.hardware.type.watch" />
 
@@ -15,7 +15,7 @@
         android:theme="@android:style/Theme.DeviceDefault"
         tools:replace="icon" >
         <activity
-            android:name=".ui.activity.WearLaunchActivity"
+            android:name="com.tempos21.bas.ui.activity.WearLaunchActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.tempos21.cieguitos.ui.activity.WearMainActivity"
+            android:name="com.tempos21.bas.ui.activity.WearMainActivity"
             android:label="@string/app_name" />
 
         <meta-data
@@ -32,10 +32,10 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".ui.activity.WearWelcomeActivity"
+            android:name="com.tempos21.bas.ui.activity.WearWelcomeActivity"
             android:label="@string/title_activity_welcome" />
         <activity
-            android:name=".ui.activity.WearObrasActivity"
+            android:name="com.tempos21.bas.ui.activity.WearObrasActivity"
             android:label="@string/title_activity_welcome" />
     </application>
 
