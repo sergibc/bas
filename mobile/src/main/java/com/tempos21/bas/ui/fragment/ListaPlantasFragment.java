@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import com.example.sergibc.sdk.data.MuseumData;
-import com.example.sergibc.sdk.data.Planta;
+import com.tempos21.bas.sdk.sdk.data.MuseumData;
+import com.tempos21.bas.sdk.sdk.data.Planta;
 import com.tempos21.bas.ui.activity.ListaExposActivity;
 import com.tempos21.bas.ui.adapter.PlantasSimpleRectangularAdapter;
 

@@ -1,4 +1,4 @@
-package com.example.sergibc.sdk.data;
+package com.tempos21.bas.sdk.sdk.data;
 
 /**
  * Created by Bernat on 25/10/2014.

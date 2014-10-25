@@ -8,8 +8,8 @@ import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.sergibc.sdk.data.MuseumData;
-import com.example.sergibc.sdk.data.Obra;
+import com.tempos21.bas.sdk.sdk.data.MuseumData;
+import com.tempos21.bas.sdk.sdk.data.Obra;
 import com.tempos21.bas.ui.adapter.ObrasPlayAdapter;
 
 import java.util.List;

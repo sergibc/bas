@@ -1,4 +1,4 @@
-package com.example.sergibc.sdk.data;
+package com.tempos21.bas.sdk.sdk.data;
 
 import java.util.ArrayList;
 import java.util.List;

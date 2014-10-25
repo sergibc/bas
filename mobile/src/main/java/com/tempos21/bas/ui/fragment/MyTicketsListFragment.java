@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import com.example.sergibc.sdk.data.MuseumData;
+import com.tempos21.bas.sdk.sdk.data.MuseumData;
 
 /**
  * Created by Bernat on 25/10/2014.

@@ -11,8 +11,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
-import com.example.sergibc.sdk.data.Expo;
-import com.example.sergibc.sdk.data.MuseumData;
+import com.tempos21.bas.sdk.sdk.data.Expo;
+import com.tempos21.bas.sdk.sdk.data.MuseumData;
 import com.tempos21.bas.ui.activity.ListaExposActivity;
 import com.tempos21.bas.ui.activity.ListaObrasActivity;
 import com.tempos21.bas.ui.adapter.ExposSimpleRectangularAdapter;

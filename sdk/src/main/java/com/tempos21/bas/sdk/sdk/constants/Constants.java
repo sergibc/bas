@@ -1,4 +1,4 @@
-package com.example.sergibc.sdk.constants;
+package com.tempos21.bas.sdk.sdk.constants;
 
 import android.os.Environment;
 
