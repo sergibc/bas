@@ -1,30 +1,39 @@
 package com.tempos21.cieguitos.ui.activity;
 
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.UtteranceProgressListener;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.estimote.sdk.Region;
 import com.example.sergibc.sdk.constants.Constants;
+import com.example.sergibc.sdk.data.MuseumDataTransfer;
 import com.example.sergibc.sdk.task.SendMessageThread;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
+import com.google.gson.Gson;
 import com.tempos21.cieguitos.R;
 import com.tempos21.cieguitos.bean.PlaceInfo;
+import com.tempos21.cieguitos.service.LocationBeaconsService;
+import com.tempos21.cieguitos.ui.fragment.DrawerFragment;
+import com.tempos21.cieguitos.ui.fragment.MuseumsListFragment;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class PhoneMainActivity extends LocationBeaconsActivity implements
         GoogleApiClient.ConnectionCallbacks,
@@ -36,14 +45,14 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
     private static final String TAG = PhoneMainActivity.class.getSimpleName();
 
     private GoogleApiClient mGoogleApiClient;
-    private TextView statusWear;
-    private View button;
 
     //    private TextToSpeech textToSpeech;
     private MediaPlayer mediaPlayer;
 
     private boolean paused = false;
     private int currentTime;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +65,30 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
 
 //        textToSpeech = new TextToSpeech(getApplicationContext(), this);
         mediaPlayer = new MediaPlayer();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.menuContent, new DrawerFragment());
+        ft.replace(R.id.content, new MuseumsListFragment());
+        ft.commit();
+
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        drawerLayout.setDrawerListener(drawerToggle);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
     }
 
     @Override
@@ -64,6 +97,9 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
 //            textToSpeech.stop();
 //            textToSpeech.shutdown();
 //        }
+        if (null != mediaPlayer) {
+            mediaPlayer.stop();
+        }
         super.onPause();
     }
 
@@ -80,21 +116,22 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
     protected void onRegionEntered(PlaceInfo placeInfo) {
 //        Toast.makeText(this, placeInfo.getText(), Toast.LENGTH_SHORT).show();
         // TODO Should be region-location(obra) mapping
-        // Send location (obra) to watch and play file
+        // Send location (floor, collection, obra) to the watch and play file
+        // We have only two eBacons, so we hardcoded some code
         String region = placeInfo.getText();
         if (Constants.REGION_BLUE.equals(region)) {
-            playOrPause(Constants.FILE_DIANA, true);
+//            playOrPause(Constants.FILE_DIANA, false);
+//            sendFloorMessage(Constants.FLOOR_2);
+            sendCollectionMessage(Constants.FLOOR_2, Constants.COLLECTION_2);
         } else if (Constants.REGION_PINK.equals(region)) {
-            playOrPause(Constants.FILE_ERMITA, true);
+            playOrPause(Constants.FILE_ERMITA, false);
         } else {
-            playOrPause(Constants.FILE_OLIMPO, true);
+            playOrPause(Constants.FILE_OLIMPO, false);
         }
     }
 
     private void findViews() {
-        statusWear = (TextView) findViewById(R.id.statusWear);
-        button = findViewById(R.id.sendButton);
-        button.setOnClickListener(this);
+
     }
 
     private void configPlayServices() {
@@ -124,11 +161,11 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        /*switch (v.getId()) {
             case R.id.sendButton:
                 sendMessage();
                 break;
-        }
+        }*/
     }
 
     @Override
@@ -139,10 +176,8 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-//                Toast.makeText(getApplicationContext(), "onMessageReceived", Toast.LENGTH_SHORT).show();
-                    statusWear.setText(message);
+                    // TODO parse data
                 }
-
             });
         } else if (Constants.BAS_ACTION_PLAYER_PATH.equals(messageEvent.getPath())) {
             final String message = new String(messageEvent.getData());
@@ -150,9 +185,35 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
         }
     }
 
-    private void sendMessage() {
-//        new SendMessageTask().execute();
-        SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_PHONE_PATH, "fromPhone");
+    /**
+     * When smartphone detects an eBacon of Floor
+     *
+     * @param floor
+     */
+    private void sendFloorMessage(int floor) {
+        MuseumDataTransfer dataTransfer = new MuseumDataTransfer();
+        dataTransfer.setPlanta(floor);
+        dataTransfer.setExpo(0);
+        dataTransfer.setObra(0);
+        Gson gson = new Gson();
+        String eBaconInfo = gson.toJson(dataTransfer);
+        SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_PHONE_FLOOR_PATH, eBaconInfo);
+        thread.start();
+    }
+
+    /**
+     * When smartphone detects an eBacon of Collection
+     *
+     * @param collection
+     */
+    private void sendCollectionMessage(int floor, int collection) {
+        MuseumDataTransfer dataTransfer = new MuseumDataTransfer();
+        dataTransfer.setPlanta(floor);
+        dataTransfer.setExpo(collection);
+        dataTransfer.setObra(0);
+        Gson gson = new Gson();
+        String eBaconInfo = gson.toJson(dataTransfer);
+        SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_PHONE_COLLECTION_PATH, eBaconInfo);
         thread.start();
     }
 
@@ -173,6 +234,7 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
 //                speak();
 //            }
 //        }
+        stopService(new Intent(getApplicationContext(), LocationBeaconsService.class));
         if (!forzePlay && mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             paused = true;
@@ -225,6 +287,9 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     mediaPlayer.stop();
+                    currentTime = 0;
+                    paused = false;
+                    startService(new Intent(getApplicationContext(), LocationBeaconsService.class));
                 }
             });
         }

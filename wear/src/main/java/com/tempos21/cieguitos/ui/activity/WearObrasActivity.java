@@ -1,6 +1,7 @@
 package com.tempos21.cieguitos.ui.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.wearable.view.GridPagerAdapter;
 import android.support.wearable.view.GridViewPager;
@@ -122,10 +123,27 @@ public class WearObrasActivity extends Activity implements
 //                }
 //            });
 //        }
+
+        if (Constants.BAS_PHONE_FLOOR_PATH.equals(messageEvent.getPath())) {
+            String eBaconInfo = new String(messageEvent.getData());
+            Intent intent = new Intent(this, WearMainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra(Constants.EBACON_PARAM, eBaconInfo);
+            startActivity(intent);
+            finish();
+        } else if (Constants.BAS_PHONE_COLLECTION_PATH.equals(messageEvent.getPath())) {
+            String eBaconInfo = new String(messageEvent.getData());
+            Intent intent = new Intent(this, WearMainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra(Constants.EBACON_PARAM, eBaconInfo);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void sendCurrentScreenMessage(String message) {
-        SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_WEAR_PATH, message);
+//        SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_WEAR_PATH, message);
+        SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_WEAR_OBRA_PATH, message);
         thread.start();
     }
 

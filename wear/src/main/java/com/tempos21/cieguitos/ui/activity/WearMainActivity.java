@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.wearable.view.GridPagerAdapter;
 import android.support.wearable.view.GridViewPager;
 import android.support.wearable.view.WatchViewStub;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -36,6 +37,8 @@ public class WearMainActivity extends Activity implements
     private WatchViewStub watchViewStub;
     private GridViewPager grid;
 
+    private String eBaconArgExtra;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,16 @@ public class WearMainActivity extends Activity implements
                 .build();
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
         stub.setOnLayoutInflatedListener(this);
+
+        Bundle extras = getIntent().getExtras();
+        if (null != extras) {
+            eBaconArgExtra = extras.getString(Constants.EBACON_PARAM);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -65,6 +78,7 @@ public class WearMainActivity extends Activity implements
         if (grid != null) {
             GridPagerAdapter adapter = new MuseumGridPagerAdapter(this, getFragmentManager());
             grid.setAdapter(adapter);
+            gotoPage(eBaconArgExtra);
         }
     }
 
@@ -111,6 +125,9 @@ public class WearMainActivity extends Activity implements
                     Toast.makeText(WearMainActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
             });
+        } else if (Constants.BAS_PHONE_FLOOR_PATH.equals(messageEvent.getPath()) || Constants.BAS_PHONE_COLLECTION_PATH.equals(messageEvent.getPath())) {
+            String eBaconInfo = new String(messageEvent.getData());
+            gotoPageRunOnMainThread(eBaconInfo);
         }
     }
 
@@ -142,6 +159,46 @@ public class WearMainActivity extends Activity implements
         Log.i(TAG, "onScreenClicked");
         Intent intent = new Intent(this, WearObrasActivity.class);
         startActivity(intent);
+    }
 
+    //    private void gotoPage(String floor) {
+//        if (Constants.FLOOR_0.equals(floor)) {
+//            // floor 0
+//            grid.setCurrentItem(0, 0, true);
+//        } else if (Constants.FLOOR_1.equals(floor)) {
+//            //floor 1
+//            grid.setCurrentItem(1, 0, true);
+//        } else if (Constants.FLOOR_2.equals(floor)) {
+//            // floor 2
+//            grid.setCurrentItem(2, 0, true);
+//        }
+//    }
+    private void gotoPage(String eBaconInfo) {
+        if (!TextUtils.isEmpty(eBaconInfo)) {
+            Gson gson = new Gson();
+            final MuseumDataTransfer dataTransfer = gson.fromJson(eBaconInfo, MuseumDataTransfer.class);
+            if (null != dataTransfer && null != grid) {
+                grid.setCurrentItem(dataTransfer.getPlanta(), dataTransfer.getExpo(), true);
+            }
+        }
+    }
+
+
+    private void gotoPageRunOnMainThread(String eBaconInfo) {
+
+        if (!TextUtils.isEmpty(eBaconInfo)) {
+            Gson gson = new Gson();
+            final MuseumDataTransfer dataTransfer = gson.fromJson(eBaconInfo, MuseumDataTransfer.class);
+            if (null != dataTransfer) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (null != grid) {
+                            grid.setCurrentItem(dataTransfer.getPlanta(), dataTransfer.getExpo(), true);
+                        }
+                    }
+                });
+            }
+        }
     }
 }

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/menu_img_bg"
+            android:scaleType="fitXY"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="#88FFFFFF"/>
+
+        <com.tempos21.cieguitos.ui.view.CircularImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_margin="24dp"
+            android:id="@+id/imageView"
+            app:border_color="?attr/colorAccent"
+            app:border_width="4dp"
+            app:border="true"
+            android:src="@drawable/img_perfil"
+            android:layout_gravity="left|top"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Ana Boronat"
+            android:id="@+id/profileName"
+            android:layout_gravity="left|bottom"
+            android:layout_marginBottom="8dp"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:paddingLeft="0dp"
+            android:layout_marginLeft="24dp"/>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/listPreferredItemHeight"
+            android:gravity="left|center_vertical"
+            android:drawableLeft="@drawable/menu_icn_perfil"
+            android:paddingLeft="16dp"
+            android:drawablePadding="16dp"
+            android:text="Mi perfil"
+            android:id="@+id/miPerfil"/>
+
+        <TextView
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/listPreferredItemHeight"
+            android:gravity="left|center_vertical"
+            android:drawableLeft="@drawable/menu_icn_tickets"
+            android:paddingLeft="16dp"
+            android:drawablePadding="16dp"
+            android:text="Tickets"/>
+
+        <TextView
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/listPreferredItemHeight"
+            android:drawableLeft="@drawable/menu_icn_expos"
+            android:paddingLeft="16dp"
+            android:drawablePadding="16dp"
+            android:gravity="left|center_vertical"
+            android:text="Exposiciones"/>
+
+        <TextView
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/listPreferredItemHeight"
+            android:drawableLeft="@drawable/menu_icn_mapa"
+            android:drawablePadding="16dp"
+            android:paddingLeft="16dp"
+            android:gravity="left|center_vertical"
+            android:text="Plano"/>
+
+        <TextView
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/listPreferredItemHeight"
+            android:drawableLeft="@drawable/menu_icn_miscolecciones"
+            android:paddingLeft="16dp"
+            android:drawablePadding="16dp"
+            android:gravity="left|center_vertical"
+            android:text="Mis colecciones"/>
+    </LinearLayout>
+
+</LinearLayout>
