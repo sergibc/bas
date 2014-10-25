@@ -1,9 +1,12 @@
 package com.tempos21.cieguitos.ui.activity;
 
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.estimote.sdk.Region;
@@ -16,6 +19,8 @@ import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 import com.tempos21.cieguitos.R;
 import com.tempos21.cieguitos.bean.PlaceInfo;
+import com.tempos21.cieguitos.ui.fragment.DrawerFragment;
+import com.tempos21.cieguitos.ui.fragment.MuseumsListFragment;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -29,12 +34,12 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
         TextToSpeech.OnInitListener {
 
     private GoogleApiClient mGoogleApiClient;
-    private TextView statusWear;
-    private View button;
 
     private TextToSpeech textToSpeech;
+	private DrawerLayout drawerLayout;
+	private ActionBarDrawerToggle drawerToggle;
 
-    @Override
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -44,9 +49,33 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
         configPlayServices();
 
         textToSpeech = new TextToSpeech(getApplicationContext(), this);
+
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+		setSupportActionBar(toolbar);
+
+		if (getSupportActionBar() != null)  {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		ft.replace(R.id.menuContent, new DrawerFragment());
+		ft.replace(R.id.content, new MuseumsListFragment());
+		ft.commit();
+
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+		drawerLayout.setDrawerListener(drawerToggle);
     }
 
-    @Override
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		drawerToggle.syncState();
+	}
+
+	@Override
     public void onPause() {
         if (null != textToSpeech) {
             textToSpeech.stop();
@@ -70,9 +99,7 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
     }
 
     private void findViews() {
-        statusWear = (TextView) findViewById(R.id.statusWear);
-        button = findViewById(R.id.sendButton);
-        button.setOnClickListener(this);
+
     }
 
     private void configPlayServices() {
@@ -102,12 +129,12 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        /*switch (v.getId()) {
             case R.id.sendButton:
                 sendMessage();
                 speak();
                 break;
-        }
+        }*/
     }
 
     @Override
@@ -118,10 +145,8 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-//                Toast.makeText(getApplicationContext(), "onMessageReceived", Toast.LENGTH_SHORT).show();
-                    statusWear.setText(message);
+                    // TODO parse data
                 }
-
             });
         }
     }

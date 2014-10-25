@@ -125,7 +125,7 @@ public class WearObrasActivity extends Activity implements
     }
 
     private void sendMessage(String message) {
-        SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_WEAR_PATH, message);
+        SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_WEAR_OBRA_PATH, message);
         thread.start();
     }
 
