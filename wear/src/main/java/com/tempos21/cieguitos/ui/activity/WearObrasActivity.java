@@ -113,19 +113,24 @@ public class WearObrasActivity extends Activity implements
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
 
-        if (Constants.BAS_PHONE_PATH.equals(messageEvent.getPath())) {
-            final String message = new String(messageEvent.getData());
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(WearObrasActivity.this, message, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+//        if (Constants.BAS_PHONE_PATH.equals(messageEvent.getPath())) {
+//            final String message = new String(messageEvent.getData());
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Toast.makeText(WearObrasActivity.this, message, Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
     }
 
-    private void sendMessage(String message) {
+    private void sendCurrentScreenMessage(String message) {
         SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_WEAR_PATH, message);
+        thread.start();
+    }
+
+    private void sendActionPlayerMessage(String message) {
+        SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_ACTION_PLAYER_PATH, message);
         thread.start();
     }
 
@@ -136,7 +141,7 @@ public class WearObrasActivity extends Activity implements
         dataTransfer.setPlanta(planta);
         dataTransfer.setExpo(expo);
         dataTransfer.setObra(i);
-        sendMessage(gson.toJson(dataTransfer));
+        sendCurrentScreenMessage(gson.toJson(dataTransfer));
     }
 
     @Override
@@ -150,7 +155,7 @@ public class WearObrasActivity extends Activity implements
     }
 
     public void onScreenClicked(final View view) {
-        Toast.makeText(WearObrasActivity.this, "onScreenClicked", Toast.LENGTH_SHORT).show();
+        sendActionPlayerMessage(Constants.FILE_ERMITA); // TODO send correct file name
     }
 
 }
