@@ -97,7 +97,7 @@ public class WearMainActivity extends Activity implements
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -111,7 +111,7 @@ public class WearMainActivity extends Activity implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
     }
 
     @Override

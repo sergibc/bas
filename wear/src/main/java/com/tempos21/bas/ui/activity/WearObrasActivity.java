@@ -7,7 +7,6 @@ import android.support.wearable.view.GridPagerAdapter;
 import android.support.wearable.view.GridViewPager;
 import android.support.wearable.view.WatchViewStub;
 import android.view.View;
-import android.widget.Toast;
 
 import com.tempos21.bas.sdk.sdk.constants.Constants;
 import com.tempos21.bas.sdk.sdk.data.MuseumDataTransfer;
@@ -94,7 +93,7 @@ public class WearObrasActivity extends Activity implements
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -108,7 +107,7 @@ public class WearObrasActivity extends Activity implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
     }
 
     @Override

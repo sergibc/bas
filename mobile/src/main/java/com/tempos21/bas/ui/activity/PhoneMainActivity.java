@@ -12,7 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
 import com.estimote.sdk.Region;
 import com.tempos21.bas.sdk.sdk.constants.Constants;
@@ -193,17 +192,17 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
     @Override
     public void onConnected(Bundle bundle) {
         Wearable.MessageApi.addListener(mGoogleApiClient, this);
-        Toast.makeText(this, "Connected!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Connected!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
     }
 
     @Override
