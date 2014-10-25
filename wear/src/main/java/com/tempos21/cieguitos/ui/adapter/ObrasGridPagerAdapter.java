@@ -14,6 +14,7 @@ import com.example.sergibc.sdk.data.MuseumData;
 import com.example.sergibc.sdk.data.Obra;
 import com.tempos21.cieguitos.BuildConfig;
 import com.tempos21.cieguitos.R;
+import com.tempos21.cieguitos.ui.fragment.BASCardFragment;
 
 /**
  * Created by Bernat on 25/10/2014.
@@ -34,7 +35,7 @@ public class ObrasGridPagerAdapter extends FragmentGridPagerAdapter {
 	@Override
 	public Fragment getFragment(int row, int column) {
 		Obra obra = MuseumData.getInstance().getPlantas().get(planta).getExpos().get(expo).getObras().get(row);
-		return CardFragment.create(obra.getTitle(), obra.getDescription());
+        return BASCardFragment.newInstance(obra.getTitle(), obra.getDescription());
 	}
 
 	@Override

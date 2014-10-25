@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.wearable.view.GridPagerAdapter;
 import android.support.wearable.view.GridViewPager;
 import android.support.wearable.view.WatchViewStub;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.sergibc.sdk.constants.Constants;
@@ -146,6 +147,10 @@ public class WearObrasActivity extends Activity implements
     @Override
     public void onPageScrollStateChanged(int i) {
 
+    }
+
+    public void onScreenClicked(final View view) {
+        Toast.makeText(WearObrasActivity.this, "onScreenClicked", Toast.LENGTH_SHORT).show();
     }
 
 }
