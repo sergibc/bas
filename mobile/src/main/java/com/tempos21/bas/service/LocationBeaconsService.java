@@ -6,7 +6,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
-import android.widget.Toast;
 
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
@@ -82,7 +81,7 @@ public class LocationBeaconsService extends Service implements BeaconManager.Ran
 				lastUUID = beacon.getProximityUUID();
 				lastMajor = beacon.getMajor();
 				lastMinor = beacon.getMinor();
-				Toast.makeText(this, lastUUID + "\n" + lastMajor + "\n" + lastMinor + "\n" + Utils.computeProximity(beacon), Toast.LENGTH_SHORT).show();
+				// Toast.makeText(this, lastUUID + "\n" + lastMajor + "\n" + lastMinor + "\n" + Utils.computeProximity(beacon), Toast.LENGTH_SHORT).show();
 				intent.putExtra(REGION_FOUND, new Region("", beacon.getProximityUUID(), beacon.getMajor(), beacon.getMinor()));
 				LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 			}
