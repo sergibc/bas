@@ -11,9 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.sergibc.sdk.constants.Constants;
-import com.example.sergibc.sdk.data.MuseumDataTransfer;
-import com.example.sergibc.sdk.task.SendMessageThread;
+import com.tempos21.bas.sdk.sdk.constants.Constants;
+import com.tempos21.bas.sdk.sdk.data.MuseumDataTransfer;
+import com.tempos21.bas.sdk.sdk.task.SendMessageThread;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;

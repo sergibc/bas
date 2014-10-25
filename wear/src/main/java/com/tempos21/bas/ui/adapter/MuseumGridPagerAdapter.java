@@ -7,8 +7,8 @@ import android.support.wearable.view.FragmentGridPagerAdapter;
 import android.support.wearable.view.ImageReference;
 import android.util.Log;
 
-import com.example.sergibc.sdk.data.Expo;
-import com.example.sergibc.sdk.data.MuseumData;
+import com.tempos21.bas.sdk.sdk.data.Expo;
+import com.tempos21.bas.sdk.sdk.data.MuseumData;
 import com.tempos21.bas.BuildConfig;
 import com.tempos21.bas.R;
 import com.tempos21.bas.ui.fragment.BASCardFragment;

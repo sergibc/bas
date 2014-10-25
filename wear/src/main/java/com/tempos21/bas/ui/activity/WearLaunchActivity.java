@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
 import android.view.View;
 
-import com.example.sergibc.sdk.data.MuseumData;
-import com.example.sergibc.sdk.data.Planta;
-import com.example.sergibc.sdk.data.Planta0;
-import com.example.sergibc.sdk.data.Planta1;
-import com.example.sergibc.sdk.data.Planta2;
+import com.tempos21.bas.sdk.sdk.data.MuseumData;
+import com.tempos21.bas.sdk.sdk.data.Planta;
+import com.tempos21.bas.sdk.sdk.data.Planta0;
+import com.tempos21.bas.sdk.sdk.data.Planta1;
+import com.tempos21.bas.sdk.sdk.data.Planta2;
 import com.tempos21.bas.R;
 
 import java.util.ArrayList;

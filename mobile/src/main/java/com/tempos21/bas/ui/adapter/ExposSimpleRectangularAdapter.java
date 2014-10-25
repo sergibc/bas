@@ -2,7 +2,7 @@ package com.tempos21.bas.ui.adapter;
 
 import android.content.Context;
 
-import com.example.sergibc.sdk.data.Expo;
+import com.tempos21.bas.sdk.sdk.data.Expo;
 
 import java.util.List;
 

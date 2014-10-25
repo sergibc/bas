@@ -1,6 +1,4 @@
-package com.example.sergibc.sdk.data;
-
-import com.example.sergibc.sdk.R;
+package com.tempos21.bas.sdk.sdk.data;
 
 import java.util.ArrayList;
 import java.util.List;

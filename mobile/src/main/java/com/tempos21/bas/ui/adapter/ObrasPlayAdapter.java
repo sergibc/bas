@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.sergibc.sdk.data.Obra;
+import com.tempos21.bas.sdk.sdk.data.Obra;
 import com.tempos21.bas.R;
 
 import java.util.List;
