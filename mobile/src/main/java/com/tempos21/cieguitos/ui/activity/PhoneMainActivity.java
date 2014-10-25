@@ -20,6 +20,7 @@ import com.google.android.gms.wearable.Wearable;
 import com.tempos21.cieguitos.R;
 import com.tempos21.cieguitos.bean.PlaceInfo;
 import com.tempos21.cieguitos.ui.fragment.DrawerFragment;
+import com.tempos21.cieguitos.ui.fragment.MuseumsListFragment;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -61,6 +62,7 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
 
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		ft.replace(R.id.menuContent, new DrawerFragment());
+		ft.replace(R.id.content, new MuseumsListFragment());
 		ft.commit();
 
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);

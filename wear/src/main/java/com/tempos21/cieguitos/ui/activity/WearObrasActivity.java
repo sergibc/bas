@@ -8,160 +8,144 @@ import android.support.wearable.view.WatchViewStub;
 import android.widget.Toast;
 
 import com.example.sergibc.sdk.constants.Constants;
-import com.example.sergibc.sdk.data.ActionObras;
 import com.example.sergibc.sdk.data.MuseumDataTransfer;
 import com.example.sergibc.sdk.task.SendMessageThread;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 import com.google.gson.Gson;
 import com.tempos21.cieguitos.R;
 import com.tempos21.cieguitos.ui.adapter.ObrasGridPagerAdapter;
-import com.tempos21.cieguitos.ui.fragment.CustomCardFragment;
 
 /**
  * Created by Bernat on 25/10/2014.
  */
 public class WearObrasActivity extends Activity implements
-		GoogleApiClient.ConnectionCallbacks,
-		WatchViewStub.OnLayoutInflatedListener,
-		GoogleApiClient.OnConnectionFailedListener,
-		MessageApi.MessageListener,
-		DataApi.DataListener,
-		GridViewPager.OnPageChangeListener,
-		CustomCardFragment.OnCardSelectedListener {
+        GoogleApiClient.ConnectionCallbacks,
+        WatchViewStub.OnLayoutInflatedListener,
+        GoogleApiClient.OnConnectionFailedListener,
+        MessageApi.MessageListener,
+        GridViewPager.OnPageChangeListener {
 
-	private static final String PLANTA = "PLANTA";
-	private static final String EXPO = "EXPO";
+    private static final String PLANTA = "PLANTA";
+    private static final String EXPO = "EXPO";
 
-	private GoogleApiClient mGoogleApiClient;
-	private boolean mResolvingError;
-	private WatchViewStub watchViewStub;
-	private GridViewPager grid;
-	private int planta;
-	private int expo;
+    private GoogleApiClient mGoogleApiClient;
+    private boolean mResolvingError;
+    private WatchViewStub watchViewStub;
+    private GridViewPager grid;
+    private int planta;
+    private int expo;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		mGoogleApiClient = new GoogleApiClient.Builder(this)
-				.addApi(Wearable.API)
-				.addConnectionCallbacks(this)
-				.addOnConnectionFailedListener(this)
-				.build();
-		final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
-		stub.setOnLayoutInflatedListener(this);
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Wearable.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
+        stub.setOnLayoutInflatedListener(this);
+    }
 
-	@Override
-	public void onLayoutInflated(WatchViewStub watchViewStub) {
-		this.watchViewStub = watchViewStub;
-		findViewsFromStub(watchViewStub);
-		setData();
-	}
+    @Override
+    public void onLayoutInflated(WatchViewStub watchViewStub) {
+        this.watchViewStub = watchViewStub;
+        findViewsFromStub(watchViewStub);
+        setData();
+    }
 
-	private void findViewsFromStub(WatchViewStub stub) {
-		grid = (GridViewPager) stub.findViewById(R.id.grid);
-		grid.setOnPageChangeListener(this);
-	}
+    private void findViewsFromStub(WatchViewStub stub) {
+        grid = (GridViewPager) stub.findViewById(R.id.grid);
+        grid.setOnPageChangeListener(this);
+    }
 
-	private void setData() {
-		if (getIntent() != null) {
-			if (grid != null) {
+    private void setData() {
+        if (getIntent() != null) {
+            if (grid != null) {
 
-				planta = getIntent().getIntExtra(PLANTA, 0);
-				expo = getIntent().getIntExtra(EXPO, 0);
+                planta = getIntent().getIntExtra(PLANTA, 0);
+                expo = getIntent().getIntExtra(EXPO, 0);
 
-				GridPagerAdapter adapter = new ObrasGridPagerAdapter(this, planta, expo, getFragmentManager());
-				grid.setAdapter(adapter);
-			}
-		}
-	}
+                GridPagerAdapter adapter = new ObrasGridPagerAdapter(this, planta, expo, getFragmentManager());
+                grid.setAdapter(adapter);
+            }
+        }
+    }
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-		if (!mResolvingError) {
-			mGoogleApiClient.connect();
-		}
-	}
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!mResolvingError) {
+            mGoogleApiClient.connect();
+        }
+    }
 
-	@Override
-	public void onConnected(Bundle bundle) {
-		Wearable.MessageApi.addListener(mGoogleApiClient, this);
-	}
+    @Override
+    public void onConnected(Bundle bundle) {
+        Wearable.MessageApi.addListener(mGoogleApiClient, this);
+    }
 
-	@Override
-	public void onConnectionSuspended(int i) {
-		Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
-	}
+    @Override
+    public void onConnectionSuspended(int i) {
+        Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
+    }
 
-	@Override
-	protected void onStop() {
-		if (null != mGoogleApiClient && mGoogleApiClient.isConnected()) {
-			Wearable.DataApi.removeListener(mGoogleApiClient, this);
-			mGoogleApiClient.disconnect();
-		}
-		super.onStop();
-	}
+    @Override
+    protected void onStop() {
+        if (null != mGoogleApiClient && mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+        super.onStop();
+    }
 
 
-	@Override
-	public void onConnectionFailed(ConnectionResult connectionResult) {
-		Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
-	}
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Toast.makeText(this, "onConnectionSuspended", Toast.LENGTH_SHORT).show();
+    }
 
-	@Override
-	public void onMessageReceived(MessageEvent messageEvent) {
+    @Override
+    public void onMessageReceived(MessageEvent messageEvent) {
 
-		if (Constants.BAS_PHONE_PATH.equals(messageEvent.getPath())) {
-			final String message = new String(messageEvent.getData());
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					Toast.makeText(WearObrasActivity.this, message, Toast.LENGTH_SHORT).show();
-				}
-			});
-		}
-	}
+        if (Constants.BAS_PHONE_PATH.equals(messageEvent.getPath())) {
+            final String message = new String(messageEvent.getData());
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(WearObrasActivity.this, message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
 
-	private void sendMessage(String message) {
-		SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_WEAR_OBRA_PATH, message);
-		thread.start();
-	}
+    private void sendMessage(String message) {
+        SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_WEAR_OBRA_PATH, message);
+        thread.start();
+    }
 
-	@Override
-	public void onDataChanged(DataEventBuffer dataEvents) {
+    @Override
+    public void onPageScrolled(int i, int i2, float v, float v2, int i3, int i4) {
+        Gson gson = new Gson();
+        MuseumDataTransfer dataTransfer = new MuseumDataTransfer();
+        dataTransfer.setPlanta(planta);
+        dataTransfer.setExpo(expo);
+        dataTransfer.setObra(i);
+        sendMessage(gson.toJson(dataTransfer));
+    }
 
-	}
+    @Override
+    public void onPageSelected(int i, int i2) {
 
-	@Override
-	public void onPageScrolled(int i, int i2, float v, float v2, int i3, int i4) {
-		Gson gson = new Gson();
-		MuseumDataTransfer dataTransfer = new MuseumDataTransfer();
-		dataTransfer.setPlanta(planta);
-		dataTransfer.setExpo(expo);
-		dataTransfer.setObra(i);
-		sendMessage(gson.toJson(dataTransfer));
-	}
+    }
 
-	@Override
-	public void onPageSelected(int i, int i2) {
+    @Override
+    public void onPageScrollStateChanged(int i) {
 
-	}
+    }
 
-	@Override
-	public void onPageScrollStateChanged(int i) {
-
-	}
-
-	@Override
-	public void onCardSelected(int row, int column) {
-		Toast.makeText(this, "Card click: " + row + "/" + column, Toast.LENGTH_SHORT).show();
-	}
 }
