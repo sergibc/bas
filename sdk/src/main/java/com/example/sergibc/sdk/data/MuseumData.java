@@ -15,7 +15,7 @@ public class MuseumData {
 		this.plantas = plantas;
 	}
 
-	public List<Planta> plantas = new ArrayList<Planta>();
+	public List<Planta> plantas;
 
 	public static MuseumData getInstance() {
 		return new MuseumData();
