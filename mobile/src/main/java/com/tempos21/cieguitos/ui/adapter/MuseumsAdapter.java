@@ -33,10 +33,11 @@ public class MuseumsAdapter extends ArrayAdapter<Museo> {
 
 		ImageView image = (ImageView) v.findViewById(R.id.image);
 		View qr = v.findViewById(R.id.qr);
+		View comprar = v.findViewById(R.id.comprar);
 
 		Museo item = getItem(position);
 
-		Picasso.with(getContext()).load(item.getImage()).into(image);
+		image.setImageResource(item.getImage());
 
 		TextView text = (TextView) v.findViewById(R.id.text);
 		TextView title = (TextView) v.findViewById(R.id.title);
@@ -47,10 +48,12 @@ public class MuseumsAdapter extends ArrayAdapter<Museo> {
 			description = description.substring(0, description.length() / 3);
 		}
 
-		if (itemSelected == position) {
+		if (item.isComprada()) {
 			qr.setVisibility(View.VISIBLE);
+			comprar.setVisibility(View.GONE);
 		} else {
 			qr.setVisibility(View.GONE);
+			comprar.setVisibility(View.VISIBLE);
 		}
 		text.setText(description);
 
