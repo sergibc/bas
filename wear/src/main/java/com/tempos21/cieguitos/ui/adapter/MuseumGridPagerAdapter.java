@@ -1,4 +1,4 @@
-package com.tempos21.cieguitos.ui.activity;
+package com.tempos21.cieguitos.ui.adapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
