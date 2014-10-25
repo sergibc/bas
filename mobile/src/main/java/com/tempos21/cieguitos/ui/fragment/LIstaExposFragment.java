@@ -7,6 +7,7 @@ package com.tempos21.cieguitos.ui.fragment;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
@@ -15,6 +16,7 @@ import com.example.sergibc.sdk.data.MuseumData;
 import com.tempos21.cieguitos.ui.activity.ListaExposActivity;
 import com.tempos21.cieguitos.ui.adapter.ExposSimpleRectangularAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,7 +33,16 @@ public class ListaExposFragment extends ListFragment {
 		int planta = getArguments().getInt(ListaExposActivity.PLANTA, 0);
 		getListView().setDivider(null);
 		List<Expo> items = MuseumData.getInstance().getPlantas().get(planta).getExpos();
-		adapter = new ExposSimpleRectangularAdapter(getActivity(), items);
+
+		List<Expo> validItems = new ArrayList<Expo>(items.size());
+
+		for (Expo item : items) {
+			if (!(TextUtils.isEmpty(item.getTitle()) || item.getImage() == 0)){
+				validItems.add(item);
+			}
+		}
+
+		adapter = new ExposSimpleRectangularAdapter(getActivity(), validItems);
 		setListAdapter(adapter);
 	}
 
