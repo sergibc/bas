@@ -26,6 +26,7 @@
         <activity android:name=".ui.activity.ListaPlantasActivity" />
         <activity android:name=".ui.activity.ListaExposActivity" />
         <activity android:name=".ui.activity.ListaTicketsActivity" />
+        <activity android:name=".ui.activity.ListaObrasActivity" />
 
         <service android:name=".service.LocationBeaconsService"/>
 

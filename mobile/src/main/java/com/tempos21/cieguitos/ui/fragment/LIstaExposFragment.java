@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.example.sergibc.sdk.data.Expo;
 import com.example.sergibc.sdk.data.MuseumData;
 import com.tempos21.cieguitos.ui.activity.ListaExposActivity;
+import com.tempos21.cieguitos.ui.activity.ListaObrasActivity;
 import com.tempos21.cieguitos.ui.adapter.ExposSimpleRectangularAdapter;
 
 import java.util.ArrayList;
@@ -52,8 +53,9 @@ public class ListaExposFragment extends ListFragment {
 
 		adapter.setItemSelected(position);
 
-		Intent intent = new Intent(getActivity(), ListaExposActivity.class);
+		Intent intent = new Intent(getActivity(), ListaObrasActivity.class);
 		intent.putExtra(ListaExposActivity.PLANTA, position);
+		startActivity(intent);
 	}
 }
 

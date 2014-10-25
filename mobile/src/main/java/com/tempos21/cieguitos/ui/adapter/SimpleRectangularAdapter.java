@@ -49,5 +49,6 @@ public abstract class SimpleRectangularAdapter<K extends ItemSelectable> extends
 	}
 	public void setItemSelected(int itemSelected) {
 		this.itemSelected = itemSelected;
+		notifyDataSetChanged();
 	}
 }
