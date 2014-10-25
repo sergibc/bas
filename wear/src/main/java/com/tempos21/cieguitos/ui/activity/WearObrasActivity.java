@@ -12,8 +12,6 @@ import com.example.sergibc.sdk.data.MuseumDataTransfer;
 import com.example.sergibc.sdk.task.SendMessageThread;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
@@ -29,7 +27,6 @@ public class WearObrasActivity extends Activity implements
         WatchViewStub.OnLayoutInflatedListener,
         GoogleApiClient.OnConnectionFailedListener,
         MessageApi.MessageListener,
-        DataApi.DataListener,
         GridViewPager.OnPageChangeListener {
 
     private static final String PLANTA = "PLANTA";
@@ -101,7 +98,6 @@ public class WearObrasActivity extends Activity implements
     @Override
     protected void onStop() {
         if (null != mGoogleApiClient && mGoogleApiClient.isConnected()) {
-            Wearable.DataApi.removeListener(mGoogleApiClient, this);
             mGoogleApiClient.disconnect();
         }
         super.onStop();
@@ -130,11 +126,6 @@ public class WearObrasActivity extends Activity implements
     private void sendMessage(String message) {
         SendMessageThread thread = new SendMessageThread(mGoogleApiClient, Constants.BAS_WEAR_PATH, message);
         thread.start();
-    }
-
-    @Override
-    public void onDataChanged(DataEventBuffer dataEvents) {
-
     }
 
     @Override
