@@ -6,7 +6,6 @@ package com.example.sergibc.sdk.data;
 public class Obra {
 	private String title;
 	private String description;
-	private ActionObras action;
 
 	public String getTitle() {
 		return title;
@@ -22,13 +21,5 @@ public class Obra {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public ActionObras getAction() {
-		return action;
-	}
-
-	public void setAction(ActionObras action) {
-		this.action = action;
 	}
 }

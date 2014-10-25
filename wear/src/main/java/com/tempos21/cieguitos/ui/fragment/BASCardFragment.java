@@ -43,13 +43,13 @@ public class BASCardFragment extends Fragment {
         CardScrollView cardScrollView =
                 (CardScrollView) mRootView.findViewById(R.id.card_scroll_view);
         cardScrollView.setCardGravity(Gravity.BOTTOM);
+		cardScrollView.setExpansionEnabled(true);
 
         cardTitle = (TextView) mRootView.findViewById(R.id.card_title);
         cardContent = (TextView) mRootView.findViewById(R.id.card_content);
 
         return mRootView;
     }
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -58,6 +58,9 @@ public class BASCardFragment extends Fragment {
         String content = getArguments().getString(ARG_CONTENT);
 
         cardTitle.setText(title);
-        cardContent.setText(content);
+		cardTitle.setTextColor(getResources().getColor(R.color.colorAccent));
+		if (content != null) {
+			cardContent.setText(content);
+		}
     }
 }

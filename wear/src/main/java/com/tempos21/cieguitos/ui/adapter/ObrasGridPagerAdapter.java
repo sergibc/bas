@@ -35,7 +35,7 @@ public class ObrasGridPagerAdapter extends FragmentGridPagerAdapter {
 	@Override
 	public Fragment getFragment(int row, int column) {
 		Obra obra = MuseumData.getInstance().getPlantas().get(planta).getExpos().get(expo).getObras().get(row);
-        return BASCardFragment.newInstance(obra.getTitle(), obra.getDescription());
+        return BASCardFragment.newInstance(obra.getTitle(), null);
 	}
 
 	@Override

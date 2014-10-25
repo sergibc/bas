@@ -25,9 +25,9 @@ public class MuseumData {
 
 	private MuseumData() {
 		plantas = new ArrayList<Planta>();
-		plantas.add(new Planta());
-		plantas.add(new Planta());
-		plantas.add(new Planta());
+		plantas.add(new Planta0());
+		plantas.add(new Planta1());
+		plantas.add(new Planta2());
 
 		museos = new ArrayList<Museo>();
 

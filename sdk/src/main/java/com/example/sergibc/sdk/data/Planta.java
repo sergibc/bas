@@ -12,10 +12,6 @@ public class Planta {
 	public Planta() {
 		expos = new ArrayList<Expo>();
 		expos.add(new Expo());
-		expos.add(new Expo());
-		expos.add(new Expo());
-		expos.add(new Expo());
-		expos.add(new Expo());
 	}
 
 	public List<Expo> getExpos() {
