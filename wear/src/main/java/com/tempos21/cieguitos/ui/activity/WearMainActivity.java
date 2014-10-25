@@ -21,12 +21,13 @@ import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 import com.google.gson.Gson;
 import com.tempos21.cieguitos.R;
+import com.tempos21.cieguitos.ui.fragment.CustomCardFragment;
 
 public class WearMainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
         WatchViewStub.OnLayoutInflatedListener,
         GoogleApiClient.OnConnectionFailedListener,
-        MessageApi.MessageListener, DataApi.DataListener, GridViewPager.OnPageChangeListener {
+        MessageApi.MessageListener, DataApi.DataListener, GridViewPager.OnPageChangeListener, CustomCardFragment.OnCardSelectedListener {
 
 	private GoogleApiClient mGoogleApiClient;
 	private boolean mResolvingError;
@@ -60,7 +61,6 @@ public class WearMainActivity extends Activity implements
 
 	private void setData() {
 		if (grid != null) {
-
 			GridPagerAdapter adapter = new MuseumGridPagerAdapter(this, getFragmentManager());
 			grid.setAdapter(adapter);
 		}
@@ -140,5 +140,10 @@ public class WearMainActivity extends Activity implements
 	@Override
 	public void onPageScrollStateChanged(int i) {
 
+	}
+
+	@Override
+	public void onCardSelected(int row, int column) {
+		Toast.makeText(this, "Card click: " + row + "/" + column, Toast.LENGTH_SHORT).show();
 	}
 }

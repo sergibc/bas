@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.wearable.view.CardFragment;
 import android.support.wearable.view.FragmentGridPagerAdapter;
 import android.support.wearable.view.ImageReference;
@@ -12,6 +13,7 @@ import android.support.wearable.view.ImageReference;
 import com.tempos21.cieguitos.BuildConfig;
 import com.tempos21.cieguitos.R;
 import com.example.sergibc.sdk.data.MuseumData;
+import com.tempos21.cieguitos.ui.fragment.CustomCardFragment;
 import com.tempos21.cieguitos.ui.fragment.PlantaFragment;
 
 /**
