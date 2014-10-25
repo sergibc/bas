@@ -24,6 +24,8 @@ public class WearLaunchActivity extends Activity implements WatchViewStub.OnLayo
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_launch);
 
+		createData();
+
 		WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
 		stub.setOnLayoutInflatedListener(this);
 	}

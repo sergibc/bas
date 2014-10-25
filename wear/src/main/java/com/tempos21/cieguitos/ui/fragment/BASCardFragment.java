@@ -59,8 +59,6 @@ public class BASCardFragment extends Fragment {
 
         cardTitle.setText(title);
 		cardTitle.setTextColor(getResources().getColor(R.color.colorAccent));
-		if (content != null) {
-			cardContent.setText(content);
-		}
+		cardContent.setText(content);
     }
 }
