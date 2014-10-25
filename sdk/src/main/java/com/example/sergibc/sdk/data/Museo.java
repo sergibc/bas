@@ -3,12 +3,18 @@ package com.example.sergibc.sdk.data;
 /**
  * Created by Bernat on 25/10/2014.
  */
-public class Museo {
+public class Museo implements ItemSelectable{
 	private int image;
 	private String name;
 	private String description;
 	private boolean comprada = false;
 
+	@Override
+	public String getTitle() {
+		return name;
+	}
+
+	@Override
 	public int getImage() {
 		return image;
 	}

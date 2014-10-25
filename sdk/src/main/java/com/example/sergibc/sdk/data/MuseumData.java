@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class MuseumData {
 	private static MuseumData museumData;
-	private List<Museo> museos;
+	private ArrayList<Museo> museos;
 
 	public List<Planta> getPlantas() {
 		return plantas;
@@ -31,18 +31,14 @@ public class MuseumData {
 
 	private MuseumData() {
 		plantas = new ArrayList<Planta>();
-		plantas.add(new Planta0());
-		plantas.add(new Planta1());
-		plantas.add(new Planta2());
-
 		museos = new ArrayList<Museo>();
 	}
 
-	public List<Museo> getMuseos() {
+	public ArrayList<Museo> getMuseos() {
 		return museos;
 	}
 
-	public void setMuseos(List<Museo> museos) {
+	public void setMuseos(ArrayList<Museo> museos) {
 		this.museos = museos;
 	}
 }

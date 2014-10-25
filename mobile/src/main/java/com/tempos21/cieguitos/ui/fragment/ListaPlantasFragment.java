@@ -8,29 +8,37 @@ import android.widget.ListView;
 
 import com.example.sergibc.sdk.data.Museo;
 import com.example.sergibc.sdk.data.MuseumData;
-import com.tempos21.cieguitos.ui.activity.ListaPlantasActivity;
+import com.example.sergibc.sdk.data.Planta;
+import com.tempos21.cieguitos.ui.activity.ListaExposActivity;
 import com.tempos21.cieguitos.ui.adapter.MuseumsSimpleRectangularAdapter;
+import com.tempos21.cieguitos.ui.adapter.PlantasSimpleRectangularAdapter;
 
 import java.util.List;
 
 /**
  * Created by Bernat on 25/10/2014.
  */
-public class MuseumsListFragment extends ListFragment {
+public class ListaPlantasFragment extends ListFragment {
+
+	private PlantasSimpleRectangularAdapter adapter;
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		getListView().setDivider(null);
-		List<Museo> items = MuseumData.getInstance().getMuseos();
-		setListAdapter(new MuseumsSimpleRectangularAdapter(getActivity(), items));
+		List<Planta> items = MuseumData.getInstance().getPlantas();
+		adapter = new PlantasSimpleRectangularAdapter(getActivity(), items);
+		setListAdapter(adapter);
 	}
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 
-		Intent intent = new Intent(getActivity(), ListaPlantasActivity.class);
+		adapter.setItemSelected(position);
+
+		Intent intent = new Intent(getActivity(), ListaExposActivity.class);
+		intent.putExtra(ListaExposActivity.PLANTA, position);
 		startActivity(intent);
 	}
 }

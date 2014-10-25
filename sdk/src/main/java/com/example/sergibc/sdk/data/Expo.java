@@ -6,11 +6,13 @@ import java.util.List;
 /**
  * Created by Bernat on 24/10/2014.
  */
-public class Expo {
+public class Expo implements ItemSelectable{
 	private String description;
 	private List<Obra> obras = new ArrayList<Obra>();
+	private int drawable;
 
-	public Expo() {
+	public Expo(int drawable) {
+		this.drawable = drawable;
 		Obra obra1 = new Obra();
 		obra1.setTitle("La ermita de San Isidro el día de la fiesta");
 		obra1.setDescription("Dos de las composiciones más célebres de Goya, La gallina ciega (P804 y P2781) y La pradera de San Isidro (P750), pertenecen a la misma serie que este boceto. La escena representada transcurre el día de la fiesta de San Isidro en los alrededores de su ermita madrileña, donde se congregaban numerosas personas para beber el agua de la fuente milagrosa que el santo había hecho brotar allí. En primer término, un majo trae el agua a un grupo de majas sentadas en el suelo, mientras que, al fondo, la muchedumbre hace cola para acceder a la fuente, distinguiéndose a la derecha a dos guardias de corps, lo que podría significar la presencia de algún miembro de la familia real entre los asistentes. De expresiva pincelada, es magistral en su estudio de las luces, además de revelar la capacidad de observación del artista (Texto extractado de La Belleza Cautiva. Pequeños tesoros del Museo del Prado, Museo Nacional del Prado, Obra Social la Caixa, 2014, p. 189).");
@@ -48,5 +50,15 @@ public class Expo {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public String getTitle() {
+		return description;
+	}
+
+	@Override
+	public int getImage() {
+		return drawable;
 	}
 }

@@ -18,11 +18,11 @@ import java.util.List;
 /**
  * Created by Bernat on 25/10/2014.
  */
-public class MuseumsAdapter extends ArrayAdapter<Museo> {
+public class MiTicketsAdapter extends ArrayAdapter<Museo> {
 	private final LayoutInflater from;
 	public int itemSelected = -1;
 
-	public MuseumsAdapter(Context context, List<Museo> objects) {
+	public MiTicketsAdapter(Context context, List<Museo> objects) {
 		super(context, 0, objects);
 		from = LayoutInflater.from(context);
 	}

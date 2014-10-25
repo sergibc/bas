@@ -13,6 +13,10 @@ import com.estimote.sdk.Region;
 import com.example.sergibc.sdk.constants.Constants;
 import com.example.sergibc.sdk.data.Museo;
 import com.example.sergibc.sdk.data.MuseumData;
+import com.example.sergibc.sdk.data.Planta;
+import com.example.sergibc.sdk.data.Planta0;
+import com.example.sergibc.sdk.data.Planta1;
+import com.example.sergibc.sdk.data.Planta2;
 import com.example.sergibc.sdk.task.SendMessageThread;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,6 +27,7 @@ import com.tempos21.cieguitos.R;
 import com.tempos21.cieguitos.bean.PlaceInfo;
 import com.tempos21.cieguitos.ui.fragment.DrawerFragment;
 import com.tempos21.cieguitos.ui.fragment.MuseumsListFragment;
+import com.tempos21.cieguitos.ui.fragment.MyTicketsListFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +53,7 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-		createMuseums();
+		createData();
 
         findViews();
 
@@ -75,8 +80,8 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
 		drawerLayout.setDrawerListener(drawerToggle);
     }
 
-	private void createMuseums() {
-		List<Museo> museos = new ArrayList<Museo>();
+	private void createData() {
+		ArrayList<Museo> museos = new ArrayList<Museo>();
 		Museo museo_cosmo = new Museo();
 		museo_cosmo.setName("CosmoCaixa");
 		museo_cosmo.setDescription("El CosmoCaixa Barcelona és un museu de ciència de l'Obra Social \"la Caixa\" amb seu a Barcelona. Fou inaugurat l'any 2004 després de la remodelació del seu predecessor, el Museu de la Ciència de Barcelona, inaugurat el 1981. ");
@@ -101,6 +106,13 @@ public class PhoneMainActivity extends LocationBeaconsActivity implements
 		museos.add(museo_madrid);
 
 		MuseumData.getInstance().setMuseos(museos);
+
+		List<Planta> plantas = new ArrayList<Planta>();
+		plantas.add(new Planta0());
+		plantas.add(new Planta1());
+		plantas.add(new Planta2());
+
+		MuseumData.getInstance().setPlantas(plantas);
 	}
 
 	@Override
