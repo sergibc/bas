@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Ana boronat"
+            android:text="Ana Boronat"
             android:id="@+id/profileName"
             android:layout_gravity="left|bottom"
             android:layout_marginBottom="8dp"
