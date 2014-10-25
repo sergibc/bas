@@ -60,7 +60,8 @@ public class WearMainActivity extends Activity implements
 
 	private void setData() {
 		if (grid != null) {
-			GridPagerAdapter adapter = new MuseumGridPagerAdapter(getFragmentManager());
+
+			GridPagerAdapter adapter = new MuseumGridPagerAdapter(this, getFragmentManager());
 			grid.setAdapter(adapter);
 		}
 	}
