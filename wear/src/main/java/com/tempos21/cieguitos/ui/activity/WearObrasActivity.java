@@ -1,13 +1,10 @@
 package com.tempos21.cieguitos.ui.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.wearable.view.GridPagerAdapter;
 import android.support.wearable.view.GridViewPager;
 import android.support.wearable.view.WatchViewStub;
-import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.sergibc.sdk.constants.Constants;
@@ -15,26 +12,35 @@ import com.example.sergibc.sdk.data.MuseumDataTransfer;
 import com.example.sergibc.sdk.task.SendMessageThread;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 import com.google.gson.Gson;
 import com.tempos21.cieguitos.R;
-import com.tempos21.cieguitos.ui.adapter.MuseumGridPagerAdapter;
+import com.tempos21.cieguitos.ui.adapter.ObrasGridPagerAdapter;
 
-public class WearMainActivity extends Activity implements
+/**
+ * Created by Bernat on 25/10/2014.
+ */
+public class WearObrasActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
         WatchViewStub.OnLayoutInflatedListener,
         GoogleApiClient.OnConnectionFailedListener,
         MessageApi.MessageListener,
+        DataApi.DataListener,
         GridViewPager.OnPageChangeListener {
 
-    private static final String TAG = WearMainActivity.class.getSimpleName();
+    private static final String PLANTA = "PLANTA";
+    private static final String EXPO = "EXPO";
 
     private GoogleApiClient mGoogleApiClient;
     private boolean mResolvingError;
     private WatchViewStub watchViewStub;
     private GridViewPager grid;
+    private int planta;
+    private int expo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +68,15 @@ public class WearMainActivity extends Activity implements
     }
 
     private void setData() {
-        if (grid != null) {
-            GridPagerAdapter adapter = new MuseumGridPagerAdapter(this, getFragmentManager());
-            grid.setAdapter(adapter);
+        if (getIntent() != null) {
+            if (grid != null) {
+
+                planta = getIntent().getIntExtra(PLANTA, 0);
+                expo = getIntent().getIntExtra(EXPO, 0);
+
+                GridPagerAdapter adapter = new ObrasGridPagerAdapter(this, planta, expo, getFragmentManager());
+                grid.setAdapter(adapter);
+            }
         }
     }
 
@@ -89,6 +101,7 @@ public class WearMainActivity extends Activity implements
     @Override
     protected void onStop() {
         if (null != mGoogleApiClient && mGoogleApiClient.isConnected()) {
+            Wearable.DataApi.removeListener(mGoogleApiClient, this);
             mGoogleApiClient.disconnect();
         }
         super.onStop();
@@ -108,7 +121,7 @@ public class WearMainActivity extends Activity implements
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(WearMainActivity.this, message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WearObrasActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -120,11 +133,17 @@ public class WearMainActivity extends Activity implements
     }
 
     @Override
+    public void onDataChanged(DataEventBuffer dataEvents) {
+
+    }
+
+    @Override
     public void onPageScrolled(int i, int i2, float v, float v2, int i3, int i4) {
         Gson gson = new Gson();
         MuseumDataTransfer dataTransfer = new MuseumDataTransfer();
-        dataTransfer.setPlanta(i);
-        dataTransfer.setExpo(i);
+        dataTransfer.setPlanta(planta);
+        dataTransfer.setExpo(expo);
+        dataTransfer.setObra(i);
         sendMessage(gson.toJson(dataTransfer));
     }
 
@@ -138,10 +157,4 @@ public class WearMainActivity extends Activity implements
 
     }
 
-    public void onScreenClicked(final View view) {
-        Log.i(TAG, "onScreenClicked");
-        Intent intent = new Intent(this, WearObrasActivity.class);
-        startActivity(intent);
-
-    }
 }

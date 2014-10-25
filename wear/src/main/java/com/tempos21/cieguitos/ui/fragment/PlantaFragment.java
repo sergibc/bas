@@ -3,7 +3,6 @@ package com.tempos21.cieguitos.ui.fragment;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,38 +15,34 @@ import com.tempos21.cieguitos.R;
  */
 public class PlantaFragment extends Fragment {
 
-    private static final String TAG = PlantaFragment.class.getSimpleName();
+	private static final String ARG_ROW = "ARG_ROW";
 
-    private static final String ARG_ROW = "ARG_ROW";
+	public static PlantaFragment newInstance(int row) {
+		PlantaFragment f = new PlantaFragment();
 
-    public static PlantaFragment newInstance(int row) {
-        PlantaFragment f = new PlantaFragment();
+		Bundle args = new Bundle();
+		args.putInt(ARG_ROW, row);
 
-        Bundle args = new Bundle();
-        args.putInt(ARG_ROW, row);
+		f.setArguments(args);
 
-        f.setArguments(args);
+		return f;
+	}
 
-        return f;
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.row_planta, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-        if (getArguments() != null) {
-            TextView text = (TextView) view.findViewById(R.id.text);
-            int row = getArguments().getInt(ARG_ROW, 0);
-            text.setText("P" + row);
-        }
-    }
-
+//	@Nullable
+//	@Override
+//	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//		super.onCreateView(inflater, container, savedInstanceState);
+//		return inflater.inflate(R.layout.row_planta, container, false);
+//	}
+//
+//	@Override
+//	public void onViewCreated(View view, Bundle savedInstanceState) {
+//		super.onViewCreated(view, savedInstanceState);
+//
+//		if (getArguments() != null) {
+//			TextView text = (TextView) view.findViewById(R.id.text);
+//			int row = getArguments().getInt(ARG_ROW, 0);
+//			text.setText("P" + row);
+//		}
+//	}
 }
