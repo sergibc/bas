@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tempos21.cieguitos.R;
+import com.tempos21.cieguitos.ui.activity.ListaTicketsActivity;
 import com.tempos21.cieguitos.ui.activity.ProfileActivity;
 
 /**
@@ -28,11 +29,16 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
 		super.onViewCreated(view, savedInstanceState);
 
 		view.findViewById(R.id.miPerfil).setOnClickListener(this);
+		view.findViewById(R.id.tickets).setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+			case R.id.tickets:
+				Intent ticketsIntent = new Intent(getActivity(), ListaTicketsActivity.class);
+				startActivity(ticketsIntent);
+				break;
 			case R.id.miPerfil:
 				Intent intent = new Intent(getActivity(), ProfileActivity.class);
 				startActivity(intent);

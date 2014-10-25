@@ -7,6 +7,7 @@ import android.support.wearable.view.FragmentGridPagerAdapter;
 import android.support.wearable.view.ImageReference;
 import android.util.Log;
 
+import com.example.sergibc.sdk.data.Expo;
 import com.example.sergibc.sdk.data.MuseumData;
 import com.tempos21.cieguitos.BuildConfig;
 import com.tempos21.cieguitos.R;
@@ -31,8 +32,8 @@ public class MuseumGridPagerAdapter extends FragmentGridPagerAdapter {
         if (column == 0) {
             fragment = PlantaFragment.newInstance(row);
         } else {
-//			fragment = CardFragment.create("Expo: " + column, "AAh aah ahh");
-            fragment = BASCardFragment.newInstance("Expo: " + column, " Eeoeoeoeoe");
+			Expo expo = MuseumData.getInstance().getPlantas().get(row).getExpos().get(column);
+            fragment = BASCardFragment.newInstance("Planta " + row, expo.getDescription());
         }
         return fragment;
     }

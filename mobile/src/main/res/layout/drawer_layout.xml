@@ -71,7 +71,8 @@
             android:drawableLeft="@drawable/menu_icn_tickets"
             android:paddingLeft="16dp"
             android:drawablePadding="16dp"
-            android:text="Tickets"/>
+            android:text="Tickets"
+            android:id="@+id/tickets"/>
 
         <TextView
             style="?android:attr/borderlessButtonStyle"
