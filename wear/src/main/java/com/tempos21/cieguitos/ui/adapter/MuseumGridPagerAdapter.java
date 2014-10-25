@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.support.wearable.view.FragmentGridPagerAdapter;
 import android.support.wearable.view.ImageReference;
+import android.util.Log;
 
 import com.example.sergibc.sdk.data.Expo;
 import com.example.sergibc.sdk.data.MuseumData;
@@ -44,7 +45,14 @@ public class MuseumGridPagerAdapter extends FragmentGridPagerAdapter {
 
     @Override
     public int getColumnCount(int i) {
-        return MuseumData.getInstance().getPlantas().get(i).getExpos().size();
+        // TODO
+        int result = 1;
+        try {
+            result = MuseumData.getInstance().getPlantas().get(i).getExpos().size();
+        } catch (Exception e) {
+            Log.e(MuseumGridPagerAdapter.class.getSimpleName(), "Error getColumnCount() ");
+        }
+        return result;
     }
 
     @Override

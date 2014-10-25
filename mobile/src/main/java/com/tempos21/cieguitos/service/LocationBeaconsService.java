@@ -46,7 +46,7 @@ public class LocationBeaconsService extends Service implements BeaconManager.Ran
 	private void start() {
 		beaconManager = new BeaconManager(this);
 		if (beaconManager.checkPermissionsAndService()) {
-			beaconManager.setBackgroundScanPeriod(10, 10);
+			beaconManager.setBackgroundScanPeriod(10, 10000);
 			beaconManager.setRangingListener(LocationBeaconsService.this);
 			beaconManager.connect(LocationBeaconsService.this);
 		}
